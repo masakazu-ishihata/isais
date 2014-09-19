@@ -23,14 +23,15 @@ int main(void)
   m = strlen(qry);
   s = (ui *)calloc(n, sizeof(ui));
   q = (ui *)calloc(m, sizeof(ui));
-
   for(min=s[0], i=1; i<n; min = min < s[i] ? min : s[i], i++);
   for(i=0; i<n; s[i] = str[i] - min + 1, i++);
   for(i=0; i<m; q[i] = qry[i] - min + 1, i++);
 
+  /* string & query */
   printf("s = \"%s\"\n", str);
   printf("q = \"%s\"\n", qry);
 
+  /* suffix array */
   a = isais_new(n, s);
   for(i=0; i<=n; i++){
     j = a->a[i];
@@ -38,8 +39,9 @@ int main(void)
     printf("%3d [%3d] : \"%s\"\n", i, j, buf);
   }
 
+  /* match */
   i = isais_match(a, m, q);
-  printf("First appearance of \"%s\" in \"%s\" is at %d.\n", qry, str, i);
+  printf("\nq = \"%s\" matches at %d in s = \"%s\".\n", qry, i, str);
 
   return 0;
 }
