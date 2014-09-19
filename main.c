@@ -10,8 +10,8 @@ void substr(char *buf, char *str, int s, int l)
 
 int main(void)
 {
-  char str[N] = "hoge hoge hoge";
-  char qry[N] = "e h";
+  char str[N] = "successfully";
+  char qry[N] = "in";
   char buf[N];
   int min = 0;
   int i, j;
@@ -28,8 +28,8 @@ int main(void)
   for(i=0; i<m; q[i] = qry[i] - min + 1, i++);
 
   /* string & query */
-  printf("s = \"%s\"\n", str);
-  printf("q = \"%s\"\n", qry);
+  printf("s = \"%s\" (%d)\n", str, n);
+  printf("q = \"%s\" (%d)\n", qry, m);
 
   /* suffix array */
   a = isais_new(n, s);
@@ -42,6 +42,11 @@ int main(void)
   /* match */
   i = isais_match(a, m, q);
   printf("\nq = \"%s\" matches at %d in s = \"%s\".\n", qry, i, str);
+
+  /* free */
+  free(s);
+  free(q);
+  isais_free(a);
 
   return 0;
 }

@@ -54,7 +54,7 @@ isais *isais_new(ui _n, ui *_s)
     // _a->t[i] = _a->s[i] < _a->s[i+1] ? 0 : 1;
     if(_a->s[i] <  _a->s[i+1])      _a->t[i] = 0;
     else if(_a->s[i] > _a->s[i+1])  _a->t[i] = 1;
-    else                            _a->t[i] = 2;
+    else                            _a->t[i] = _a->t[i+1];
   }
 
   /* bucket pointer */
@@ -75,7 +75,7 @@ isais *isais_new(ui _n, ui *_s)
 /*------------------------------------*/
 int isais_is_LMS(isais *_a, int _i)
 {
-  return _i > 0 && _a->t[_i-1] == 1 && _a->t[_i] != 1;
+  return _i > 0 && _a->t[_i-1] == 1 && _a->t[_i] == 0;
 }
 /*------------------------------------*/
 /* fill */
@@ -152,7 +152,7 @@ void isais_show_s(FILE *_fp, isais *_a)
 {
   int i;
   for(i=0; i<_a->n; i++) fprintf(_fp, "%5d", i);
-  printf("\n");
+  fprintf(_fp, "\n");
   for(i=0; i<_a->n; i++) fprintf(_fp, "%5d", _a->s[i]);
   fprintf(_fp, "\n");
 }
@@ -182,8 +182,8 @@ void isais_show_c(FILE *_fp, isais *_a)
 void isais_show(FILE *_fp, isais *_a)
 {
   int i, j;
-  printf("n = %d\n", _a->n);
-  printf("m = %d\n", _a->m);
+  fprintf(_fp, "n = %d\n", _a->n);
+  fprintf(_fp, "m = %d\n", _a->m);
   for(i=0; i<_a->n; i++){
     fprintf(_fp, "[%5d] %5d :", i, _a->a[i]);
     for(j=_a->a[i]; j<_a->n; j++){
@@ -203,6 +203,7 @@ int isais_match(isais *_a, ui _n, ui *_s)
 
   for(i=isais_search(_a, _n, _s); i<_a->n; i++){
     j = _a->a[i];
+    if(_a->n-i < _n) break;
     if(arycmp(_n, _s, _n , &(_a->s[j])) == 0 && (min == -1 || min > j))
       min = j;
   }
@@ -212,9 +213,12 @@ int isais_match(isais *_a, ui _n, ui *_s)
 int isais_search(isais *_a, ui _n, ui *_s)
 {
   if(_n < 1) return 0;
+  if(_s[0] >= _a->m) return _a->n;
 
-  int s = _a->p[ _s[0] ];
-  int t = _a->p[ _s[0] ] + _a->c[ _s[0] ];
+  //  int s = _a->p[ _s[0] ];
+  //  int t = _a->p[ _s[0] ] + _a->c[ _s[0] ];
+  int s = 0;
+  int t = _a->n-1;
   int m, i, c;
 
   /* binary search */
