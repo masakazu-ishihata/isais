@@ -10,8 +10,8 @@ void substr(char *buf, char *str, int s, int l)
 
 int main(void)
 {
-  char str[N] = "successfully";
-  char qry[N] = "in";
+  char str[N] = "successfully accessed";
+  char qry[N] = "ss";
   char buf[N];
   int min = 0;
   int i, j;
