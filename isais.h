@@ -43,7 +43,7 @@ void isais_fill_Stype(isais *_a);
 int isais_is_LMS(isais *_a, int _i);
 
 /* free */
-void isais_free(isais *_a);
+void isais_free(void *_p);
 
 /* show */
 void isais_show_s(FILE *_fp, isais *_a);
