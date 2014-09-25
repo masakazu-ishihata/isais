@@ -78,7 +78,7 @@ void isais_fill_sorted_LMS(isais *_a)
 
   /* fill sorted LMS */
   for(i=0; i<_a->n; i++) _a->a[i] = _a->n+1;
-  for(_a->p[0]=0, i=1; _a->p[i]=_a->p[i-1]+_a->c[i], i<_a->m; i++); /* reset p */
+  for(_a->p[0]=0, i=1; i<_a->m; _a->p[i]=_a->p[i-1]+_a->c[i], i++); /* reset p */
   for(i=0; i<n; i++) _a->a[ _a->p[_a->s[l[i]]]-- ] = l[i];
   free(l);
 }
