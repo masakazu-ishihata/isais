@@ -29,26 +29,39 @@ typedef struct ISAIS
   ui  m;    /* # of charactors */
   ui *s;    /* string */
   ui *t;    /* type of suffix */
+  ui *l;    /* LMS-substring : l[i] = j where i is LMS ID and j is the next LMS ID */
   ui *a;    /* suffix array */
   ui *c;    /* count of each charactor */
   ui *p;    /* pointer of each bucket */
 } isais;
 
-/* new */
+/* new/free */
 isais *isais_new(ui _n, ui *_s);
+void isais_free(void *_p);
+
+/* bucket */
+void isais_bucket_head(isais *_a);
+void isais_bucket_end(isais *_a);
+
+/* propositional functions */
+int isais_is_LMS(isais *_a, int _i);
+int isais_is_Ltype(isais *_a, int _i);
+int isais_is_Stype(isais *_a, int _i);
+int isais_comp_LMS_substring(isais *_a, int _i, int _j);
+
+/* fill */
+void isais_fill_sorted_LMS_substring(isais *_a);
 void isais_fill_sorted_LMS(isais *_a);
 void isais_fill_LMS(isais *_a);
 void isais_fill_Ltype(isais *_a);
 void isais_fill_Stype(isais *_a);
-int isais_is_LMS(isais *_a, int _i);
 
-/* free */
-void isais_free(void *_p);
 
 /* show */
 void isais_show_s(FILE *_fp, isais *_a);
 void isais_show_a(FILE *_fp, isais *_a);
 void isais_show_t(FILE *_fp, isais *_a);
+void isais_show_l(FILE *_fp, isais *_a);
 void isais_show_c(FILE *_fp, isais *_a);
 void isais_show(FILE *_fp, isais *_a);
 

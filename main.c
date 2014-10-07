@@ -1,6 +1,8 @@
 #include "main.h"
 
 #define N 1024
+#define W 5
+#define MODE 0
 
 void substr(char *buf, char *str, int s, int l)
 {
@@ -10,11 +12,20 @@ void substr(char *buf, char *str, int s, int l)
 
 int main(void)
 {
-  char str[N] = "successfully accessed";
-  char qry[N] = "ss";
+
+  char str[N] = "hoge hoge hgoe";
+  char qry[N] = "hoge hoge hoge";
+
+  switch(MODE){
+  case 0: strcpy(str, "201020103"); break;
+  case 1: strcpy(str, "mmiissiissiippii"); break;
+  case 2: strcpy(str, "abracadabra"); break;
+  }
+  strcpy(qry, str);
+
   char buf[N];
-  int min = 0;
-  int i, j;
+  int min;
+  int i, j, k;
   ui n, *s, m, *q;
   isais *a;
 
@@ -23,13 +34,17 @@ int main(void)
   m = strlen(qry);
   s = (ui *)calloc(n, sizeof(ui));
   q = (ui *)calloc(m, sizeof(ui));
-  for(min=s[0], i=1; i<n; min = min < s[i] ? min : s[i], i++);
+  min = str[0];
+  for(i=1; i<n; min = min < str[i] ? min : str[i], i++);
+  for(i=0; i<n; min = min < qry[i] ? min : qry[i], i++);
   for(i=0; i<n; s[i] = str[i] - min + 1, i++);
   for(i=0; i<m; q[i] = qry[i] - min + 1, i++);
 
   /* string & query */
-  printf("s = \"%s\" (%d)\n", str, n);
-  printf("q = \"%s\" (%d)\n", qry, m);
+  printf("s = \"%s\" :", str);
+  for(i=0; i<n; i++) printf("%5d", s[i]); printf(" : %d\n", n);
+  printf("q = \"%s\" :", qry);
+  for(i=0; i<m; i++) printf("%5d", q[i]); printf(" : %d\n", m);
 
   /* suffix array */
   a = isais_new(n, s);
@@ -40,8 +55,12 @@ int main(void)
   }
 
   /* match */
-  i = isais_match(a, m, q);
-  printf("\nq = \"%s\" matches at %d in s = \"%s\".\n", qry, i, str);
+  for(i=0; i<m-W+1; i++){
+  substr(buf, qry, i, W);
+  j = isais_match(a, W, &q[i]);
+  k = isais_search(a, W, &q[i]);
+  printf("%3d : match \"%s\" at %3d (%3d)\n", i, buf, j, k);
+  }
 
   /* free */
   free(s);
